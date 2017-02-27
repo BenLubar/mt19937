@@ -18,8 +18,9 @@ package mt19937_c
 //
 // void benchmark_rand(unsigned long long n)
 // {
+//     unsigned long long i;
 //     init_genrand64(123456789LLU);
-//     for (unsigned long long i = 0; i < n; i++)
+//     for (i = 0; i < n; i++)
 //     {
 //         genrand64_int64();
 //     }
@@ -27,7 +28,8 @@ package mt19937_c
 //
 // void benchmark_seed(unsigned long long n)
 // {
-//     for (unsigned long long i = 0; i < n; i++)
+//     unsigned long long i;
+//     for (i = 0; i < n; i++)
 //     {
 //         init_genrand64(123456789LLU);
 //     }
@@ -46,7 +48,8 @@ package mt19937_c
 //         0x7890123456789012LLU,
 //         0x3456789012345678LLU,
 //     };
-//     for (unsigned long long i = 0; i < n; i++)
+//     unsigned long long i;
+//     for (i = 0; i < n; i++)
 //     {
 //         init_by_array64(seed, sizeof(seed) / sizeof(seed[0]));
 //     }
