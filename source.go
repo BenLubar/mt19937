@@ -65,7 +65,6 @@ package mt19937
 import (
 	"encoding/binary"
 	"fmt"
-	"math/rand"
 )
 
 const nn = 312
@@ -83,8 +82,6 @@ type Source struct {
 	index uint16
 	init  bool
 }
-
-var _ rand.Source64 = (*Source)(nil)
 
 // NewSource is a convenience function that creates a Source and calls Seed.
 func NewSource(seed int64) *Source {
@@ -119,7 +116,7 @@ func (s *Source) UnmarshalBinary(buf []byte) error {
 	}
 
 	index := binary.LittleEndian.Uint16(buf[nn*64/8:])
-	if index >= nn {
+	if index > nn {
 		return fmt.Errorf("mt19937: random state index out of range: %d", index)
 	}
 

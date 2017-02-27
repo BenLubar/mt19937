@@ -10,6 +10,15 @@ import (
 
 const count = 128
 
+func TestAutoInit(t *testing.T) {
+	var s mt19937.Source
+	for i := 0; i < 10; i++ {
+		if n := s.Uint64(); n == 0 {
+			t.Errorf("was 0: %d %d", i, n)
+		}
+	}
+}
+
 func TestSingle64(t *testing.T) {
 	if err := quick.CheckEqual(func(seed uint64) (out [count]uint64) {
 		mt19937_c.InitGenRand64(seed)
@@ -56,6 +65,25 @@ func TestArray64(t *testing.T) {
 		}
 		return
 	}, func(seed [8]uint64) (out [count]uint64) {
+		var s mt19937.Source
+		s.SeedMulti(seed[:]...)
+		for i := range out {
+			out[i] = s.Uint64()
+		}
+		return
+	}, nil); err != nil {
+		t.Error(err)
+	}
+}
+
+func TestArrayBig64(t *testing.T) {
+	if err := quick.CheckEqual(func(seed [1024]uint64) (out [count]uint64) {
+		mt19937_c.InitByArray64(seed[:]...)
+		for i := range out {
+			out[i] = mt19937_c.GenRand64Int64()
+		}
+		return
+	}, func(seed [1024]uint64) (out [count]uint64) {
 		var s mt19937.Source
 		s.SeedMulti(seed[:]...)
 		for i := range out {
